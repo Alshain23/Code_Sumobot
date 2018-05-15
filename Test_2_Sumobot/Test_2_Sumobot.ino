@@ -62,7 +62,7 @@ void loop()
 
 
 
-   if (ligne()) // si le robot capte la ligne blanche, on recule
+  /* if (ligne()) // si le robot capte la ligne blanche, on recule
   {
     reculer();
     delay(1000);
@@ -71,7 +71,8 @@ void loop()
   else  // sinon on cherche l'adversaire et on avance vers lui
   {
     attaquer();
-  } 
+  } */
+  lith();
 
  
 }

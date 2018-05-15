@@ -28,4 +28,4 @@ void attaquer();
 void retourner();
 int test_IR();
 bool ligne();
-void bite();
+void lith();
