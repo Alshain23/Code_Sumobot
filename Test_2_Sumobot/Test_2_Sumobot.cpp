@@ -61,7 +61,7 @@ void chercher() // on cherche l'adversaire en tournant sur soi meme
 
 
 void attaquer(){ // on cherche et on avance vers l'adversaire
- chercher();
+ chercher(); 
  avancer();
  delay(100);
  
@@ -116,28 +116,46 @@ long ultrason_distance() // calcul la distance de l'adversaire
   return mesure;
 }
 
-int test_IR()
+int test_IRD()
 {
   int noiseandsignal, noise, denoisedsignal;
   
-  digitalWrite(TCRT_POWER,HIGH); //turn ON LED 
+  digitalWrite(TCRT_POWERD,HIGH); //turn ON LED 
   delayMicroseconds(500); 
-  noiseandsignal = analogRead(TCRT); 
-  digitalWrite(TCRT_POWER,LOW);  //turn OFF LED
+  noiseandsignal = analogRead(TCRTD); 
+  digitalWrite(TCRT_POWERD,LOW);  //turn OFF LED
   delayMicroseconds(500);  
-  noise = analogRead(TCRT);
+  noise = analogRead(TCRTD);
   denoisedsignal = noiseandsignal - noise; 
   Serial.print("analog : "); 
   Serial.print(denoisedsignal);  //signal 
   Serial.print(" --- digital : "); 
-  Serial.println(digitalRead(TCRT));
+  Serial.println(digitalRead(TCRTD));
+  
+  return(denoisedsignal);
+}
+int test_IRG()
+{
+  int noiseandsignal, noise, denoisedsignal;
+  
+  digitalWrite(TCRT_POWERG,HIGH); //turn ON LED 
+  delayMicroseconds(500); 
+  noiseandsignal = analogRead(TCRTG); 
+  digitalWrite(TCRT_POWERG,LOW);  //turn OFF LED
+  delayMicroseconds(500);  
+  noise = analogRead(TCRTG);
+  denoisedsignal = noiseandsignal - noise; 
+  Serial.print("analog : "); 
+  Serial.print(denoisedsignal);  //signal 
+  Serial.print(" --- digital : "); 
+  Serial.println(digitalRead(TCRTG));
   
   return(denoisedsignal);
 }
 
 bool ligne()
 {
-  if ( test_IR() > 300)
+  if ( test_IRD() > 300)
   {
     return true;
   }else

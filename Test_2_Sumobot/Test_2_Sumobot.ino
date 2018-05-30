@@ -8,12 +8,15 @@ void setup() {
   pinMode(MOT_D_DIR1, OUTPUT);
   pinMode(ULTRASON_TRIGGER, OUTPUT);
   pinMode(ULTRASON_ECHO, INPUT);
-  pinMode(TCRT, INPUT);
-  pinMode(TCRT_POWER, OUTPUT); 
+  pinMode(TCRTG, INPUT);
+  pinMode(TCRT_POWERG, OUTPUT); 
+
+  pinMode(TCRTD, INPUT);
+  pinMode(TCRT_POWERD, OUTPUT);
 
   pinMode(7, OUTPUT);
   pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
+;
   
 
   Serial.begin(9600);
@@ -57,7 +60,7 @@ void loop()
 
 
 
-  /* if (ligne()) // si le robot capte la ligne blanche, on recule
+   if (ligne()) // si le robot capte la ligne blanche, on recule
   {
     reculer();
     delay(1000);
@@ -66,8 +69,9 @@ void loop()
   else  // sinon on cherche l'adversaire et on avance vers lui
   {
     attaquer();
-  } */
-  lith();
+  } 
+  
+  
 
  
 }
