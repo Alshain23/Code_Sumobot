@@ -5,7 +5,9 @@ static const uint8_t MOT_D_DIR1  = 10;
 static const uint8_t MOT_D_DIR2  = 11;
 static const uint8_t TCRTD  = A3;
 static const uint8_t TCRT_POWERD  = 3;
-
+static const uint8_t GND_BOUTON = 2;
+static const uint8_t VCC_BOUTON = 3;
+static const uint8_t BOUTON = 7;
 static const uint8_t TCRTG  = A4;
 static const uint8_t TCRT_POWERG  = 9;
 
@@ -13,7 +15,8 @@ static const uint8_t ULTRASON_TRIGGER = 12;
 static const uint8_t ULTRASON_ECHO = 13;
 
 
-void prog_principal(); // programme principal fonctionnel
+void strat1();
+void strat2();
  
 void avancer(); // fait avancer le robot 
 
@@ -33,6 +36,8 @@ void stopMot(); // arrete les moteurs du robot
 
 void chercher(); // tourne sur lui meme a gauche pour trouver un obstacle, une fois trouver il s'arrete de tourner
 
+long suivie(bool sens);
+
 void attaquer(); // avance vers l'obstacle pendant 100 ms
 
 void retourner(); // tourne sur lui meme de 180 degres
@@ -42,7 +47,7 @@ int test_IRG(); // fonction de test du capteur de ligne gauche
 
 int test_IRD (); // fonction de test du capteur de ligne droit
 
-bool ligne_1(); // fonction qui renvoie "true" si il detecte la ligne blanche, "false" sinon (analogique)
+bool ligne(); // fonction qui renvoie "true" si il detecte la ligne blanche, "false" sinon (analogique)
 
 bool ligne_2(); // fonction qui renvoie "true" si il detecte la ligne blanche, "false" sinon (digital)
 

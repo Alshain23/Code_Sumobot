@@ -1,5 +1,5 @@
 
-#include "Test_2_Sumobot.h"
+#include "Sumobot.h"
 // Les anolog write est une valeur en pwm situé entre 0 et 255
 void avancer(){ // le robot avance a la vitesse 0,154 m/s
   analogWrite(MOT_D_DIR1, 255); // on fait avancer le moteur droit
@@ -66,11 +66,36 @@ void chercher() // on cherche l'adversaire en tournant sur soi meme
 
   do // tant que on ne capte pas l'adversaire on tourne a gauche
   { 
-    gauche();
+    droite();
     mesure = ultrason_distance();
     Serial.println(mesure); 
     
   }while ((mesure > 40 ) || ( mesure == 0));
+}
+
+long suivie(bool sens) // on cherche l'adversaire en tournant sur soi meme
+{
+  long mesure = ultrason_distance();  
+  int compteur = 0;
+
+
+  while (((mesure > 40 ) || ( mesure == 0))&& compteur < 5 )
+  {
+    
+    if (sens == true){
+      gauche();
+    }
+    else{
+      droite();
+    }
+    mesure = ultrason_distance();
+
+    compteur ++;
+    delay(50);
+    
+  }
+
+  return(mesure);
 }
 
 
@@ -126,7 +151,7 @@ long ultrason_distance() // calcul la distance de l'adversaire
   // On effectue la conversion en centimètres
   mesure = mesure * 17/1000;
 
-  Serial.println(mesure);
+  //Serial.println(mesure);
   
   return mesure;
 }
@@ -168,7 +193,7 @@ int test_IRG()
   return(denoisedsignal);
 }
 
-bool ligne_1()
+bool ligne()
 {
   if ( test_IRG() > 400)
   {
@@ -236,18 +261,45 @@ void lith()
   
 }
 
-void prog_principal()
+void strat1()
 {
+  while(1){
+    
+     if (ligne()) // si le robot capte la ligne blanche, on recule
+    {
+      reculer();
+      delay(1000);
+      stopMot();
+    }
+    else  // sinon on cherche l'adversaire et on avance vers lui
+    {
+      attaquer();
+    }
+
+  }
+}
+
+void strat2()
+{
+  while(1){
+    chercher();
+    int compteur = 0;
+    
+    while(compteur < 5){
+      mesure = suivie(sens);
+      if(mesure < 40)
+      {
+        avancer();
+        delay(100);
+      }
+      else{
+        sens = !sens;
+        compteur++;
+      } 
+    }
+    
+  }
   
-   if (ligne_1()) // si le robot capte la ligne blanche, on recule
-  {
-    reculer();
-    delay(1000);
-    stopMot();
-  }
-  else  // sinon on cherche l'adversaire et on avance vers lui
-  {
-    attaquer();
-  }
+}
 }
 

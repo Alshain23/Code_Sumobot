@@ -1,4 +1,4 @@
-#include "Test_2_Sumobot.h"
+#include "Sumobot.h"
 
 void setup() {
   // put your setup code here, to run once:
@@ -12,12 +12,14 @@ void setup() {
   pinMode(TCRTG, INPUT);
   pinMode(TCRT_POWERG, OUTPUT); 
 
+  pinMode(BOUTON, INPUT_PULLUP);
+
   pinMode(TCRTD, INPUT);
   pinMode(TCRT_POWERD, OUTPUT);
 
   pinMode(7, OUTPUT);
   pinMode(8, OUTPUT);
-;
+
   
 
   Serial.begin(9600);//communication série test
@@ -25,6 +27,8 @@ void setup() {
 
   //init  pin TCRT 5000
   pinMode(3,OUTPUT);
+
+  
 }
 
 
@@ -54,8 +58,35 @@ void setup() {
 //programme principale ou on ordonne au robot de faire certaine action 
 void loop()
 {
+  bool sens = true;
+  long mesure = 0;
+  
 
-prog_principal();
+while(!digitalRead(BOUTON))
+{
+  delay(1000);
+  
+  while(1){
+    chercher();
+    int compteur = 0;
+    
+    while(compteur < 5){
+      mesure = suivie(sens);
+      if(mesure < 40)
+      {
+        avancer();
+        delay(100);
+      }
+      else{
+        sens = !sens;
+        compteur++;
+      } 
+    }
+    
+  }
+  
+}
+
 
 
 }
