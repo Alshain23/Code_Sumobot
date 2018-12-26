@@ -68,26 +68,29 @@ while(!digitalRead(BOUTON))
   
   while(1){
     chercher();
-    int compteur = 0;
+    bool trouver = true ;
     
-    while(compteur < 5){
+    while(trouver){
+
+      
+      
+      
       mesure = suivie(sens);
+      
       if(mesure < 40)
       {
-        avancer();
-        delay(100);
+        avancer(100);
       }
       else{
         sens = !sens;
-        compteur++;
-      } 
-    }
+        trouver = false;
+      }
     
-  }
+    }
   
+  }
+}
 }
 
 
-
-}
 

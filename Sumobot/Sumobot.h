@@ -20,13 +20,27 @@ void strat2();
  
 void avancer(); // fait avancer le robot 
 
+void avancer(int temps_ms);
+
 void reculer(); // fait reculer le robot
+
+void reculer(int temps_ms);
  
 void gauche(); // fait tourner le robot sur lui meme vers la gauche a l'infini
+
+void gauche(int temps_ms);
+
+void gauchePuissance(int powerRate);
+
+void gauche(int temps_ms, int powerRate);
 
 void gauche_90(); // fait tourner le robot sur lui meme vers la gauche de 90 degrés
 
 void droite(); // fait tourner le robot sur lui meme vers la droite a l'infine
+
+void droite(int temps_ms);
+void droitePuissance(int powerRate);
+void droite(int temps_ms, int powerRate);
 
 void droite_90(); // fait tourner le robot sur lui meme vers la droite de 90 degrés
 

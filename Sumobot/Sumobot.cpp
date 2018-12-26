@@ -10,6 +10,17 @@ void avancer(){ // le robot avance a la vitesse 0,154 m/s
   analogWrite(MOT_G_DIR2,0);
 }
 
+void avancer(int temps_ms){ // le robot avance a la vitesse 0,154 m/s
+  analogWrite(MOT_D_DIR1, 255); // on fait avancer le moteur droit
+  analogWrite(MOT_D_DIR2, 0);
+
+
+  analogWrite(MOT_G_DIR1,255); // on fait avancer le moteur gauche
+  analogWrite(MOT_G_DIR2,0);
+
+  delay(temps_ms);
+}
+
 
 //fonction qui met la direction de recule a 100% sur les 2 moteurs du robot
 void reculer(){
@@ -21,6 +32,17 @@ void reculer(){
   analogWrite(MOT_G_DIR2, 255); // on fait reculer le moteur gauche
 }
 
+void reculer(int temps_ms){
+   analogWrite(MOT_D_DIR1,0); 
+  analogWrite(MOT_D_DIR2, 255); // on fait reculer le moteur droit
+
+
+  analogWrite(MOT_G_DIR1,0);
+  analogWrite(MOT_G_DIR2, 255); // on fait reculer le moteur gauche
+
+  delay(temps_ms);
+}
+
 void gauche(){ // 185.5 deg/s 3.23rad/s
   analogWrite(MOT_D_DIR1,255); // on fait avancer le moteur droit
   analogWrite(MOT_D_DIR2, 0);
@@ -28,6 +50,37 @@ void gauche(){ // 185.5 deg/s 3.23rad/s
 
   analogWrite(MOT_G_DIR1,0);
   analogWrite(MOT_G_DIR2, 255); // on fait reculer le moteur droit
+}
+
+void gauchePuissance(int powerRate){ // 185.5 deg/s 3.23rad/s
+  analogWrite(MOT_D_DIR1, powerRate); // on fait avancer le moteur droit
+  analogWrite(MOT_D_DIR2, 0);
+
+
+  analogWrite(MOT_G_DIR1,0);
+  analogWrite(MOT_G_DIR2, powerRate); // on fait reculer le moteur droit
+}
+
+void gauche(int temps_ms){ // 185.5 deg/s 3.23rad/s
+  analogWrite(MOT_D_DIR1,255); // on fait avancer le moteur droit
+  analogWrite(MOT_D_DIR2, 0);
+
+
+  analogWrite(MOT_G_DIR1,0);
+  analogWrite(MOT_G_DIR2, 255); // on fait reculer le moteur droit
+
+  delay(temps_ms);
+}
+
+void gauche(int temps_ms, int powerRate){ // 185.5 deg/s 3.23rad/s
+  analogWrite(MOT_D_DIR1,powerRate); // on fait avancer le moteur droit
+  analogWrite(MOT_D_DIR2, 0);
+
+
+  analogWrite(MOT_G_DIR1,0);
+  analogWrite(MOT_G_DIR2, powerRate); // on fait reculer le moteur droit
+
+  delay(temps_ms);
 }
 //fonction qui permet de tourner à gauche de 90°
 void gauche_90(){
@@ -43,6 +96,41 @@ void droite(){
 
   analogWrite(MOT_G_DIR1,255); // on fait avancer le moteur gauche
   analogWrite(MOT_G_DIR2, 0);
+
+
+}
+
+void droitePuissance(int powerRate){
+  analogWrite(MOT_D_DIR1,0); 
+  analogWrite(MOT_D_DIR2, powerRate); // on fait reculer le moteur droit
+
+
+  analogWrite(MOT_G_DIR1,powerRate); // on fait avancer le moteur gauche
+  analogWrite(MOT_G_DIR2, 0);
+
+
+}
+
+void droite(int temps_ms){
+  analogWrite(MOT_D_DIR1,0); 
+  analogWrite(MOT_D_DIR2, 255); // on fait reculer le moteur droit
+
+
+  analogWrite(MOT_G_DIR1,255); // on fait avancer le moteur gauche
+  analogWrite(MOT_G_DIR2, 0);
+
+  delay(temps_ms);
+}
+
+void droite(int temps_ms, int powerRate){
+  analogWrite(MOT_D_DIR1,0); 
+  analogWrite(MOT_D_DIR2, powerRate); // on fait reculer le moteur droit
+
+
+  analogWrite(MOT_G_DIR1,powerRate); // on fait avancer le moteur gauche
+  analogWrite(MOT_G_DIR2, 0);
+
+  delay(temps_ms);
 }
 //fonction qui permet de tourner à droite de 90°
 void droite_90(){
@@ -66,7 +154,7 @@ void chercher() // on cherche l'adversaire en tournant sur soi meme
 
   do // tant que on ne capte pas l'adversaire on tourne a gauche
   { 
-    droite();
+    droitePuissance(200);
     mesure = ultrason_distance();
     Serial.println(mesure); 
     
@@ -81,17 +169,30 @@ long suivie(bool sens) // on cherche l'adversaire en tournant sur soi meme
 
   while (((mesure > 40 ) || ( mesure == 0))&& compteur < 5 )
   {
+    if (compteur == 0){
+          
+            if (sens == true){
+              gauche(250);
+            }
+            else{
+              droite(250);
+            }
+          }
+     else{
+            if (sens == true){
+              gauche(500);
+                  }
+            else{
+              droite(500);
+            }
+          }
+          
     
-    if (sens == true){
-      gauche();
-    }
-    else{
-      droite();
-    }
     mesure = ultrason_distance();
 
     compteur ++;
-    delay(50);
+    sens = !sens;
+    
     
   }
 
@@ -281,25 +382,38 @@ void strat1()
 
 void strat2()
 {
+bool sens = true;
+  long mesure = 0;
+  
+
+while(!digitalRead(BOUTON))
+{
+  delay(5000);
+  
   while(1){
     chercher();
-    int compteur = 0;
+    bool trouver = true ;
     
-    while(compteur < 5){
+    while(trouver){
+
+      
+      
+      
       mesure = suivie(sens);
+      
       if(mesure < 40)
       {
-        avancer();
-        delay(100);
+        avancer(100);
       }
       else{
         sens = !sens;
-        compteur++;
-      } 
-    }
+        trouver = false;
+      }
     
-  }
+    }
   
+  }
 }
 }
+
 
